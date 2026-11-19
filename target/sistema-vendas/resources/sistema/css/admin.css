@@ -1,0 +1,106 @@
+:root {
+    --header-bg: rgba(94, 140, 209, 1);
+    --menu-text-color: #fff;
+}
+
+body {
+    padding: 0;
+    margin: 0;
+}
+
+.container-flex {
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+}
+
+.main-admin {
+    flex: 1;
+}
+
+.footer-template {
+    border-top: 1px solid rgba(0,0,0,0.2);
+    padding: 10px;
+}
+
+.header-flex {
+    display: flex;
+    align-items: center;
+    background: var(--header-bg);
+    height: 64px;
+    padding: 0 10px;
+}
+
+.logo {
+    display: block;
+}
+.logo img {
+    height: 48px;
+}
+
+.titulo-paginas {
+    padding: 15px 20px;
+    font-size: 1.5em;
+}
+.titulo-paginas i {
+    font-size: 1.3rem;
+}
+.conteudo-paginas {
+        padding: 15px 20px;
+}
+.ui-menubar {
+    background: transparent !important;
+    background-color: transparent !important;
+    border: none !important; /* Optional: removes the border if desired */
+}
+
+body .ui-menu .ui-menu-list .ui-menuitem .ui-menuitem-link .ui-menuitem-text {
+    color: var(--menu-text-color);
+}
+body .ui-menu .ui-menu-list .ui-menuitem .ui-menuitem-link .ui-menuitem-icon {
+    color: var(--menu-text-color);
+}
+/* If you also want the inner lists/items to be transparent */
+.ui-menubar .ui-menu-list, 
+.ui-menubar .ui-menuitem {
+    background:  var(--header-bg)!important;
+}
+
+body .ui-menu .ui-menu-list .ui-menuitem .ui-menuitem-link.ui-state-hover {
+     background:  rgba(255, 255, 255, 0.3) !important;
+}
+/* ===== Sistema de Vendas ===== */
+.form-grid { width: 100%; margin-top: 12px; }
+.form-grid td:first-child { width: 160px; font-weight: 600; vertical-align: top; }
+.contador { color: #6b7280; font-size: .85em; }
+.dica-form { display: block; margin: 10px 0; color: #4b5563; font-size: .9em; }
+
+.thumb {
+    width: 64px; height: 64px;
+    object-fit: cover; border-radius: 8px;
+    border: 1px solid rgba(0,0,0,.15);
+}
+.sem-imagem { font-size: 1.6rem; color: #9ca3af; }
+.previa-imagem { display: block; margin-top: 10px; }
+.preview-img {
+    display: block; max-width: 100%; width: 220px; height: auto;
+    border-radius: 10px; border: 1px solid rgba(0,0,0,.15);
+    margin-bottom: 8px;
+}
+
+.cards-dashboard { display: flex; flex-wrap: wrap; gap: 16px; margin-top: 20px; }
+.card-dash {
+    display: flex; flex-direction: column; align-items: center; gap: 6px;
+    flex: 1 1 180px; max-width: 260px; padding: 22px 16px;
+    border-radius: 12px; border: 1px solid rgba(0,0,0,.12);
+    background: #f8fafc; color: inherit; text-decoration: none;
+    transition: box-shadow .15s, transform .15s;
+}
+.card-dash:hover { box-shadow: 0 4px 14px rgba(0,0,0,.12); transform: translateY(-2px); }
+.card-dash i { font-size: 2rem; color: var(--header-bg); }
+.card-dash-total { font-size: 2rem; font-weight: 700; }
+
+@media (max-width: 640px) {
+    .conteudo-paginas { padding: 10px; }
+    .form-grid td:first-child { width: auto; }
+}

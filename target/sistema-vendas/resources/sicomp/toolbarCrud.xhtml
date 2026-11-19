@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:cc="jakarta.faces.composite"
+      xmlns:p="primefaces">
+
+    <!-- INTERFACE -->
+    <cc:interface>
+        <cc:attribute name="crudBean" required="true" shortDescription="Barra usada em conjunto com o crud. Necessário passar o controller que estende GenericController."></cc:attribute>
+    </cc:interface>
+
+    <!-- IMPLEMENTATION -->
+    <cc:implementation>
+        <p:toolbar>
+            <p:toolbarGroup>
+                <!-- Estado LISTAR -->
+                <p:commandButton value="Novo" icon="pi pi-plus"
+                                 rendered="#{cc.attrs.crudBean.listando}"
+                                 actionListener="#{cc.attrs.crudBean.novo()}" process="@this" update="@form">
+                </p:commandButton>
+                <p:spacer width="5px"></p:spacer>
+                <p:commandButton value="Atualizar" icon="pi pi-refresh" styleClass="ui-button-secondary"
+                                 rendered="#{cc.attrs.crudBean.listando}"
+                                 actionListener="#{cc.attrs.crudBean.listar()}" process="@this" update="@form">
+                </p:commandButton>
+                <!-- Estado CRIAR / ATUALIZAR -->
+                <p:commandButton value="Salvar" icon="pi pi-save" styleClass="ui-button-success"
+                                 rendered="#{not cc.attrs.crudBean.listando}"
+                                 actionListener="#{cc.attrs.crudBean.salvar()}" update="@form">
+                </p:commandButton>
+                <p:spacer width="5px"></p:spacer>
+                <p:commandButton value="Voltar" icon="pi pi-arrow-left" styleClass="ui-button-secondary"
+                                 rendered="#{not cc.attrs.crudBean.listando}" immediate="true"
+                                 actionListener="#{cc.attrs.crudBean.cancelar()}" process="@this" update="@form">
+                </p:commandButton>
+            </p:toolbarGroup>
+            <p:toolbarGroup align="right">
+                <cc:insertChildren></cc:insertChildren>
+            </p:toolbarGroup>
+        </p:toolbar>
+    </cc:implementation>
+</html>

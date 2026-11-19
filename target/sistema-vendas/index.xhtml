@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="jakarta.faces.html"
+                xmlns:ui="jakarta.faces.facelets"
+                template="/template.xhtml"
+                xmlns:p="primefaces">
+
+    <ui:param name="titulo" value="Dashboard"></ui:param>
+
+    <h2>Bem-vindo ao Sistema de Vendas</h2>
+    <p>Módulo de catálogo: gerencie marcas, categorias e produtos.</p>
+
+    <div class="cards-dashboard">
+        <a href="marca.xhtml" class="card-dash">
+            <i class="pi pi-tag"></i>
+            <span class="card-dash-total">#{dashboardController.totalMarcas}</span>
+            <span>Marcas</span>
+        </a>
+        <a href="categoria.xhtml" class="card-dash">
+            <i class="pi pi-sitemap"></i>
+            <span class="card-dash-total">#{dashboardController.totalCategorias}</span>
+            <span>Categorias</span>
+        </a>
+        <a href="produto.xhtml" class="card-dash">
+            <i class="pi pi-box"></i>
+            <span class="card-dash-total">#{dashboardController.totalProdutos}</span>
+            <span>Produtos</span>
+        </a>
+    </div>
+</ui:composition>

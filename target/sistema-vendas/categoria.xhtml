@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="jakarta.faces.html"
+                xmlns:f="jakarta.faces.core"
+                xmlns:ui="jakarta.faces.facelets"
+                template="/template.xhtml"
+                xmlns:p="primefaces"
+                xmlns:si="jakarta.faces.composite/sicomp">
+    <ui:param name="titulo" value="Gerenciar Categorias"></ui:param>
+    <h:form id="formCategoria">
+        <si:toolbarCrud crudBean="#{categoriaController}"></si:toolbarCrud>
+
+        <!-- Formulário (novo / editar) -->
+        <p:panelGrid columns="2" layout="tabular" styleClass="form-grid"
+                     rendered="#{not categoriaController.listando}">
+            <p:outputLabel for="nome" value="Nome *"></p:outputLabel>
+            <p:inputText id="nome" value="#{categoriaController.entidade.nome}" maxlength="100" size="40"
+                         required="true" requiredMessage="O nome da categoria é obrigatório."></p:inputText>
+
+            <p:outputLabel for="pai" value="Categoria pai"></p:outputLabel>
+            <p:selectOneMenu id="pai" value="#{categoriaController.entidade.categoriaPai}"
+                             filter="true" filterMatchMode="contains" style="min-width:340px">
+                <f:selectItem itemLabel="(Nenhuma - categoria raiz)" itemValue="#{null}" noSelectionOption="true"></f:selectItem>
+                <f:selectItems value="#{categoriaController.opcoesPai}" var="c"
+                               itemLabel="#{c.nomeIndentado}" itemValue="#{c}"></f:selectItems>
+            </p:selectOneMenu>
+        </p:panelGrid>
+        <p:outputPanel rendered="#{not categoriaController.listando}" styleClass="dica-form">
+            <i class="pi pi-info-circle"></i>
+            Deixe "Categoria pai" vazio para criar uma categoria raiz. Ao editar, a própria categoria e suas descendentes não aparecem como opção (evita ciclos).
+        </p:outputPanel>
+
+        <!-- Listagem em ordem hierárquica -->
+        <p:dataTable id="tabela" widgetVar="tabelaCategorias" var="c" value="#{categoriaController.entidades}"
+                     rendered="#{categoriaController.listando}" paginator="true" rows="10"
+                     rowsPerPageTemplate="5,10,20,50" paginatorPosition="bottom" reflow="true"
+                     emptyMessage="Nenhuma categoria encontrada." rowKey="#{c.id}" sortMode="single">
+            <p:column headerText="Id" sortBy="#{c.id}" style="width:70px">
+                <h:outputText value="#{c.id}"></h:outputText>
+            </p:column>
+            <p:column headerText="Nome" sortBy="#{c.nome}" filterBy="#{c.nome}" filterMatchMode="contains">
+                <h:outputText value="#{c.nomeIndentado}"></h:outputText>
+            </p:column>
+            <p:column headerText="Caminho hierárquico" sortBy="#{c.caminho}" filterBy="#{c.caminho}" filterMatchMode="contains">
+                <h:outputText value="#{c.caminho}"></h:outputText>
+            </p:column>
+            <p:column headerText="Subcategorias" sortBy="#{c.quantidadeSubcategorias}" style="width:130px; text-align:center">
+                <h:outputText value="#{c.quantidadeSubcategorias}"></h:outputText>
+            </p:column>
+            <p:column headerText="Ações" style="width:120px; text-align:center">
+                <p:commandButton icon="pi pi-pencil" title="Editar" styleClass="rounded-button ui-button-warning"
+                                 actionListener="#{categoriaController.editar(c)}" process="@this" update="@form">
+                </p:commandButton>
+                <p:spacer width="4px"></p:spacer>
+                <p:commandButton icon="pi pi-trash" title="Excluir" styleClass="rounded-button ui-button-danger"
+                                 actionListener="#{categoriaController.excluir(c)}" process="@this" update="@form">
+                    <p:confirm header="Confirmar exclusão" message="Deseja realmente excluir a categoria '#{c.nome}'?" icon="pi pi-exclamation-triangle"></p:confirm>
+                </p:commandButton>
+            </p:column>
+        </p:dataTable>
+
+        <p:confirmDialog global="true" showEffect="fade" hideEffect="fade" responsive="true" width="430">
+            <p:commandButton value="Sim, excluir" type="button" styleClass="ui-confirmdialog-yes ui-button-danger" icon="pi pi-check"></p:commandButton>
+            <p:commandButton value="Não" type="button" styleClass="ui-confirmdialog-no ui-button-secondary" icon="pi pi-times"></p:commandButton>
+        </p:confirmDialog>
+    </h:form>
+</ui:composition>

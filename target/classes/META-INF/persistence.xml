@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<persistence version="3.0" xmlns="https://jakarta.ee/xml/ns/persistence"
+             xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+             xsi:schemaLocation="https://jakarta.ee/xml/ns/persistence https://jakarta.ee/xml/ns/persistence/persistence_3_0.xsd">
+
+    <!-- Tomcat nao possui JTA: transacoes RESOURCE_LOCAL controladas na camada de servico -->
+    <persistence-unit name="vendasPU" transaction-type="RESOURCE_LOCAL">
+        <provider>org.hibernate.jpa.HibernatePersistenceProvider</provider>
+
+        <class>br.edu.vendas.model.Marca</class>
+        <class>br.edu.vendas.model.Categoria</class>
+        <class>br.edu.vendas.model.Produto</class>
+        <exclude-unlisted-classes>true</exclude-unlisted-classes>
+
+        <properties>
+            <!-- Valores padrao. Podem ser sobrescritos por variaveis de ambiente
+                 ou -D (DB_URL, DB_USER, DB_PASSWORD, DB_HBM2DDL) - veja JpaProducer -->
+            <property name="jakarta.persistence.jdbc.driver" value="org.postgresql.Driver"/>
+            <property name="jakarta.persistence.jdbc.url" value="jdbc:postgresql://localhost:5432/vendas"/>
+            <property name="jakarta.persistence.jdbc.user" value="postgres"/>
+            <property name="jakarta.persistence.jdbc.password" value="postgres"/>
+
+            <!-- O esquema e criado pelo script sql/01_ddl.sql -->
+            <property name="hibernate.hbm2ddl.auto" value="none"/>
+            <!-- A validacao e feita na camada de servico (mensagens amigaveis) -->
+            <property name="jakarta.persistence.validation.mode" value="none"/>
+
+            <property name="hibernate.connection.pool_size" value="10"/>
+            <property name="hibernate.show_sql" value="false"/>
+            <property name="hibernate.format_sql" value="true"/>
+        </properties>
+    </persistence-unit>
+</persistence>

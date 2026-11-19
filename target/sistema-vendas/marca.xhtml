@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="jakarta.faces.html"
+                xmlns:f="jakarta.faces.core"
+                xmlns:ui="jakarta.faces.facelets"
+                template="/template.xhtml"
+                xmlns:p="primefaces"
+                xmlns:si="jakarta.faces.composite/sicomp">
+    <ui:param name="titulo" value="Gerenciar Marcas"></ui:param>
+    <h:form id="formMarca">
+        <si:toolbarCrud crudBean="#{marcaController}"></si:toolbarCrud>
+
+        <!-- Formulário (novo / editar) -->
+        <p:panelGrid columns="2" layout="tabular" styleClass="form-grid"
+                     rendered="#{not marcaController.listando}">
+            <p:outputLabel for="nome" value="Nome *"></p:outputLabel>
+            <p:inputText id="nome" value="#{marcaController.entidade.nome}" maxlength="100" size="40"
+                         required="true" requiredMessage="O nome da marca é obrigatório."></p:inputText>
+
+            <p:outputLabel for="descricao" value="Descrição"></p:outputLabel>
+            <p:inputTextarea id="descricao" value="#{marcaController.entidade.descricao}"
+                             rows="3" cols="50" maxlength="255" counter="contDescricao"
+                             counterTemplate="{0} caracteres restantes"></p:inputTextarea>
+            <h:outputText value=""></h:outputText>
+            <h:outputText id="contDescricao" styleClass="contador"></h:outputText>
+
+            <p:outputLabel for="ativo" value="Ativa"></p:outputLabel>
+            <p:toggleSwitch id="ativo" value="#{marcaController.entidade.ativo}"></p:toggleSwitch>
+        </p:panelGrid>
+
+        <!-- Listagem -->
+        <p:dataTable id="tabela" widgetVar="tabelaMarcas" var="m" value="#{marcaController.entidades}"
+                     rendered="#{marcaController.listando}" paginator="true" rows="10"
+                     rowsPerPageTemplate="5,10,20,50" paginatorPosition="bottom" reflow="true"
+                     emptyMessage="Nenhuma marca encontrada." rowKey="#{m.id}" sortMode="single">
+            <p:column headerText="Id" sortBy="#{m.id}" style="width:70px">
+                <h:outputText value="#{m.id}"></h:outputText>
+            </p:column>
+            <p:column headerText="Nome" sortBy="#{m.nome}" filterBy="#{m.nome}" filterMatchMode="contains">
+                <h:outputText value="#{m.nome}"></h:outputText>
+            </p:column>
+            <p:column headerText="Descrição" filterBy="#{m.descricao}" filterMatchMode="contains">
+                <h:outputText value="#{m.descricao}"></h:outputText>
+            </p:column>
+            <p:column headerText="Situação" sortBy="#{m.ativo}" style="width:110px">
+                <p:tag value="#{m.ativo ? 'Ativa' : 'Inativa'}" severity="#{m.ativo ? 'success' : 'danger'}"></p:tag>
+            </p:column>
+            <p:column headerText="Ações" style="width:120px; text-align:center">
+                <p:commandButton icon="pi pi-pencil" title="Editar" styleClass="rounded-button ui-button-warning"
+                                 actionListener="#{marcaController.editar(m)}" process="@this" update="@form">
+                </p:commandButton>
+                <p:spacer width="4px"></p:spacer>
+                <p:commandButton icon="pi pi-trash" title="Excluir" styleClass="rounded-button ui-button-danger"
+                                 actionListener="#{marcaController.excluir(m)}" process="@this" update="@form">
+                    <p:confirm header="Confirmar exclusão" message="Deseja realmente excluir a marca '#{m.nome}'?" icon="pi pi-exclamation-triangle"></p:confirm>
+                </p:commandButton>
+            </p:column>
+        </p:dataTable>
+
+        <p:confirmDialog global="true" showEffect="fade" hideEffect="fade" responsive="true" width="430">
+            <p:commandButton value="Sim, excluir" type="button" styleClass="ui-confirmdialog-yes ui-button-danger" icon="pi pi-check"></p:commandButton>
+            <p:commandButton value="Não" type="button" styleClass="ui-confirmdialog-no ui-button-secondary" icon="pi pi-times"></p:commandButton>
+        </p:confirmDialog>
+    </h:form>
+</ui:composition>
